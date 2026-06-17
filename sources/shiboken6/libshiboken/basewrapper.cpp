@@ -1352,6 +1352,7 @@ void callCppDestructors(SbkObject *pyObj)
        invalidate doesn't */
     invalidate(pyObj);
 
+    std::cout << "callCppDestructors(): " << priv->cptr << std::endl;
     delete[] priv->cptr;
     priv->cptr = nullptr;
     priv->validCppObject = false;
@@ -1736,6 +1737,7 @@ void destroy(SbkObject *self, void *cppData)
         self->d->hasOwnership = false;
 
         // the cpp object instance was deleted
+	std::cout << "destroy(): " << self->d->cptr << std::endl;
         delete[] self->d->cptr;
         self->d->cptr = nullptr;
     }
@@ -1867,6 +1869,7 @@ void deallocData(SbkObject *self, bool cleanup)
     if (self->d->cptr) {
         // Remove from BindingManager
         Shiboken::BindingManager::instance().releaseWrapper(self);
+	std::cout << "deallocData(): " << self->d->cptr << std::endl;
         delete[] self->d->cptr;
         self->d->cptr = nullptr;
         // delete self->d; PYSIDE-205: wrong!
